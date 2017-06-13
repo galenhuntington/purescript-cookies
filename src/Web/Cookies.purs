@@ -1,5 +1,6 @@
 module Web.Cookies (
            setCookie
+         , setSimpleCookie
          , getCookie
          , deleteCookie
          , COOKIE (..)
