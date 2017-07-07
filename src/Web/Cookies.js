@@ -35,8 +35,7 @@ exports._setCookie =
                         }
                     }
 
-                    //document.cookie = updatedCookie;
-                    console.log(updatedCookie)
+                    document.cookie = updatedCookie;
                 };
             };
         };
