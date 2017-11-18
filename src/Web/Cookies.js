@@ -35,8 +35,7 @@ exports._setCookie =
                         }
                     }
 
-                    //document.cookie = updatedCookie;
-                    console.log(updatedCookie)
+                    document.cookie = updatedCookie;
                 };
             };
         };
@@ -57,11 +56,11 @@ exports._getCookie =
                 return [data];
             }
         };
-    }
+    };
 
 // удаляем вызовом setCookie с датой в прошлом
 exports.deleteCookie = function(name) {
     return function() {
-        exports.setCookie(name)("")({expires: -1})();
+        exports._setCookie(name)("")({expires: -1})();
     };
-}
+};
