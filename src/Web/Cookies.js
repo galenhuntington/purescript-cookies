@@ -39,7 +39,7 @@ exports._setCookie =
                 };
             };
         };
-    }
+    };
 
 // возвращает cookie с именем name, если есть, если нет, то undefined
 exports._getCookie =
@@ -57,10 +57,3 @@ exports._getCookie =
             }
         };
     };
-
-// удаляем вызовом setCookie с датой в прошлом
-exports.deleteCookie = function(name) {
-    return function() {
-        exports._setCookie(name)("")({expires: -1})();
-    };
-};
