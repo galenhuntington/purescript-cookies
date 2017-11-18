@@ -14,7 +14,7 @@ module Web.Cookies (
 import Prelude
 import Control.Monad.Eff (Eff, kind Effect)
 import Data.Maybe (Maybe(..))
-import Data.Options (Option, Options, opt)
+import Data.Options (Option, Options, options, opt)
 import Data.JSDate (JSDate)
 
 foreign import data COOKIE :: Effect
@@ -54,7 +54,7 @@ foreign import deleteCookie :: forall eff. String -> Eff (cookie :: COOKIE | eff
 -- | Set cookie with specified name and value. Last argument (opts) is a map of optional arguments such as expiration time.
 setCookie :: forall eff value. String -> value -> Maybe (Options CookiesOptions) -> Eff (cookie :: COOKIE | eff) Unit
 setCookie name value Nothing = _setCookie name value unit
-setCookie name value (Just opts) = _setCookie name value $ Options opts
+setCookie name value (Just opts) = _setCookie name value $ options opts
 
 -- | Set cookie with specified name and value. No options to the cookie are specified.
 setSimpleCookie :: forall eff value. String -> value -> Eff (cookie :: COOKIE | eff) Unit
