@@ -56,18 +56,17 @@ getCookie key = do
           prepare _ = pure Nothing
 
 -- | Set cookie with specified name and value. Last argument (opts) is a map of optional arguments such as expiration time.
-setCookie :: forall eff value. String -> value -> Maybe (Options CookiesOptions) -> Eff (cookie :: COOKIE | eff) Unit
-setCookie name value Nothing = _setCookie name value unit
-setCookie name value (Just opts) = _setCookie name value $ options opts
+setCookie :: forall eff value. String -> value -> Options CookiesOptions -> Eff (cookie :: COOKIE | eff) Unit
+setCookie name value opts = _setCookie name value $ options opts
 
 -- | Set cookie with specified name and value. No options to the cookie are specified.
 setSimpleCookie :: forall eff value. String -> value -> Eff (cookie :: COOKIE | eff) Unit
-setSimpleCookie name value = _setCookie name value unit
+setSimpleCookie name value = setCookie name value mempty
 
 -- | Delete cookie with specified name and options.
-deleteCookie :: forall eff opts. String -> Maybe (Options CookiesOptions) -> Eff (cookie :: COOKIE | eff) Unit
-deleteCookie name opts = setCookie name "" $ Just $ (fromMaybe mempty opts) <> expires' := -1
+deleteCookie :: forall eff opts. String -> Options CookiesOptions -> Eff (cookie :: COOKIE | eff) Unit
+deleteCookie name opts = setCookie name "" $ opts <> expires' := -1
 
 -- | Delete cookie with specified name. No options to the cookie are specified.
 deleteSimpleCookie :: forall eff value. String -> Eff (cookie :: COOKIE | eff) Unit
-deleteSimpleCookie name = deleteCookie name Nothing
+deleteSimpleCookie name = deleteCookie name mempty

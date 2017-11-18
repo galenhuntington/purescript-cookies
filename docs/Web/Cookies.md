@@ -9,7 +9,7 @@ data COOKIE :: Effect
 #### `setCookie`
 
 ``` purescript
-setCookie :: forall eff value opts. String -> value -> opts -> Eff (cookie :: COOKIE | eff) Unit
+setCookie :: forall eff value. String -> value -> Options CookiesOptions -> Eff (cookie :: COOKIE | eff) Unit
 ```
 
 Set cookie with specified name and value. Last argument (opts) is a map of optional arguments such as expiration time
@@ -31,7 +31,16 @@ getCookie :: forall eff value. String -> Eff (cookie :: COOKIE | eff) (Maybe val
 #### `deleteCookie`
 
 ``` purescript
-deleteCookie :: forall eff. String -> Eff (cookie :: COOKIE | eff) Unit
+deleteCookie :: forall eff. String -> Options CookiesOptions -> Eff (cookie :: COOKIE | eff) Unit
+```
+
+ Delete cookie with specified name and options
+
+
+#### `deleteSimpleCookie`
+
+``` purescript
+deleteSimpleCookie :: forall eff. String -> Eff (cookie :: COOKIE | eff) Unit
 ```
 
  Delete cookie with specified name
