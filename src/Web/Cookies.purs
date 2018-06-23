@@ -4,7 +4,6 @@ module Web.Cookies (
          , getCookie
          , deleteCookie
          , deleteSimpleCookie
-         , COOKIE (..)
          , CookiesOptions
          , path
          , domain
@@ -14,13 +13,11 @@ module Web.Cookies (
          ) where
 
 import Prelude
-import Control.Monad.Eff (Eff, kind Effect)
-import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Monoid (mempty)
+import Effect (Effect)
+import Data.Maybe (Maybe(..))
 import Data.Options (Option, Options, options, opt, (:=))
 import Data.JSDate (JSDate)
 
-foreign import data COOKIE :: Effect
 foreign import data CookiesOptions :: Type
 
 -- Following are the available cookies options
@@ -43,12 +40,12 @@ secure :: Option CookiesOptions Boolean
 secure = opt "secure"
        
        
-foreign import _setCookie :: forall eff value opts. String -> value -> opts -> Eff (cookie :: COOKIE | eff) Unit
+foreign import _setCookie :: forall value opts. String -> value -> opts -> Effect Unit
 
-foreign import _getCookie :: forall eff value. String -> Eff (cookie :: COOKIE | eff) (Array value)
+foreign import _getCookie :: forall value. String -> Effect (Array value)
 
 -- |  Get cookie with specified name.
-getCookie :: forall eff value. String -> Eff (cookie :: COOKIE | eff) (Maybe value)
+getCookie :: forall value. String -> Effect (Maybe value)
 getCookie key = do
     cook <- _getCookie key
     prepare cook
@@ -56,17 +53,17 @@ getCookie key = do
           prepare _ = pure Nothing
 
 -- | Set cookie with specified name and value. Last argument (opts) is a map of optional arguments such as expiration time.
-setCookie :: forall eff value. String -> value -> Options CookiesOptions -> Eff (cookie :: COOKIE | eff) Unit
+setCookie :: forall value. String -> value -> Options CookiesOptions -> Effect Unit
 setCookie name value opts = _setCookie name value $ options opts
 
 -- | Set cookie with specified name and value. No options to the cookie are specified.
-setSimpleCookie :: forall eff value. String -> value -> Eff (cookie :: COOKIE | eff) Unit
+setSimpleCookie :: forall value. String -> value -> Effect Unit
 setSimpleCookie name value = setCookie name value mempty
 
 -- | Delete cookie with specified name and options.
-deleteCookie :: forall eff opts. String -> Options CookiesOptions -> Eff (cookie :: COOKIE | eff) Unit
+deleteCookie :: String -> Options CookiesOptions -> Effect Unit
 deleteCookie name opts = setCookie name "" $ opts <> expires' := -1
 
 -- | Delete cookie with specified name. No options to the cookie are specified.
-deleteSimpleCookie :: forall eff value. String -> Eff (cookie :: COOKIE | eff) Unit
+deleteSimpleCookie :: String -> Effect Unit
 deleteSimpleCookie name = deleteCookie name mempty
