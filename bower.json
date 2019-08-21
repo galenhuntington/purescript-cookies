@@ -18,7 +18,7 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-eff": "^3.2.1",
+    "purescript-effect": "^2.0.1",
     "purescript-maybe": "^4.0.1",
     "purescript-options": "^5.0.0",
     "purescript-js-date": "^6.0.0"
