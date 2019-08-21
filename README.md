@@ -1,3 +1,6 @@
+I have been modifying this just to make it work, and be appropriately general.
+
+
 # purescript-cookies
 
 Library allows setting, getting and deleting cookies.
